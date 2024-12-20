@@ -1,5 +1,5 @@
 from qdrant_client import QdrantClient
-from arXiv.constanti import *
+from constanti import *
 
 # Configura il client Qdrant
 client = QdrantClient(host=HOST_DATABASE, port=PORT_DATABASE)

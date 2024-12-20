@@ -5,7 +5,7 @@ from qdrant_client import QdrantClient
 from qdrant_client.models import VectorParams, Distance
 from sentence_transformers import SentenceTransformer
 from PyPDF2 import PdfReader
-from arXiv.constanti import *
+from constanti import *
 
 # Inizializza il client Qdrant
 client = QdrantClient(host=HOST_DATABASE, port=PORT_DATABASE)

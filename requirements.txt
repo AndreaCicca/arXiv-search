@@ -1,0 +1,3 @@
+feedparser
+markitdown
+qdrant_client
