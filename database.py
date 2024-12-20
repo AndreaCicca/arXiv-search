@@ -73,7 +73,7 @@ for metadata_file in os.listdir(METADATA_DIR):
     points=[
         {
             "id": point_id,
-            "vector": embedding.tolist(),
+            "vector": {"default": embedding.tolist()}, 
             "payload": {
                 "title": metadata["title"],
                 "summary": metadata["summary"],
