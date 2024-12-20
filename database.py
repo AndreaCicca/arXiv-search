@@ -67,17 +67,16 @@ for metadata_file in os.listdir(METADATA_DIR):
     # Genera un ID valido per Qdrant
     point_id = str(uuid.uuid4())  # Genera un UUID univoco
 
-    # Carica i dati su Qdrant
     client.upsert(
     collection_name=COLLECTION_NAME,
     points=[
         {
             "id": point_id,
-            "vector": {"default": embedding.tolist()},
-            "payload": {
+            "vector": embedding.tolist(),
+            "payload": {  # Aggiungi i metadati come payload
                 "title": metadata["title"],
                 "summary": metadata["summary"],
-                "text": pdf_text,
+                "text": pdf_text,  # Testo estratto dal PDF
                 "authors": metadata["authors"],
                 "categories": metadata["categories"],
                 "published": metadata["published"],
@@ -87,6 +86,7 @@ for metadata_file in os.listdir(METADATA_DIR):
         }
     ],
 )
+
     print(f"Caricato: {metadata_file} con il PDF associato.")
 
 print("Caricamento completato!")
