@@ -115,4 +115,12 @@ def download_arxiv_data(query="all:computer+science", start=0, max_results=5,
             print(f"Nessun PDF disponibile per: {entry.title}")
 
 if __name__ == "__main__":
-    download_arxiv_data()
+    # Apro il file download.json
+    with open("download.json", "r") as f:
+        data = json.load(f)
+        
+    max_results = data["max_results"]
+    
+    # per ogni elemento in query eseguo il download
+    for query in data["queries"]:
+        download_arxiv_data(query=query, max_results=max_results)
