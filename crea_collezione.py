@@ -8,6 +8,6 @@ client = QdrantClient(host=HOST_DATABASE, port=PORT_DATABASE)
 # Ricrea la collezione con una configurazione valida
 client.recreate_collection(
     collection_name=COLLECTION_NAME,
-    vectors_config={"default": VectorParams(size=384, distance=Distance.COSINE)},  # Configura un vettore chiamato "default"
+    vectors_config=VectorParams(size=ENBEDDING_MODEL_NUMERO_PARAMETRI, distance=Distance.COSINE),  # Rimuovi il nome del vettore
 )
 print(f"Collezione '{COLLECTION_NAME}' ricreata con successo!")

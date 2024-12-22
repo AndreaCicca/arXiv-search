@@ -11,13 +11,13 @@ from constanti import *
 client = QdrantClient(host=HOST_DATABASE, port=PORT_DATABASE)
 
 # Inizializza il modello di embedding
-embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+embedding_model = SentenceTransformer(ENBEDDING_MODEL)
 
 # Crea o ricrea la collezione
 if not client.collection_exists(collection_name=COLLECTION_NAME):
     client.create_collection(
         collection_name=COLLECTION_NAME,
-        vectors_config=VectorParams(size=384, distance=Distance.COSINE),
+        vectors_config=VectorParams(size=ENBEDDING_MODEL_NUMERO_PARAMETRI, distance=Distance.COSINE),
     )
     print(f"Collezione '{COLLECTION_NAME}' creata con successo!")
 else:
@@ -67,16 +67,19 @@ for metadata_file in os.listdir(METADATA_DIR):
     # Genera un ID valido per Qdrant
     point_id = str(uuid.uuid4())  # Genera un UUID univoco
 
+    
+    
+    # NOTA BEBNE: il campo `vector` è obbligatorio e deve essere coerente con quello che viene utilizzato quando si crea la collezione
     client.upsert(
     collection_name=COLLECTION_NAME,
     points=[
         {
             "id": point_id,
-            "vector": embedding.tolist(),
-            "payload": {  # Aggiungi i metadati come payload
+            "vector": embedding.tolist(),  # Usa il campo `vector`
+            "payload": {
                 "title": metadata["title"],
                 "summary": metadata["summary"],
-                "text": pdf_text,  # Testo estratto dal PDF
+                "text": pdf_text,
                 "authors": metadata["authors"],
                 "categories": metadata["categories"],
                 "published": metadata["published"],
@@ -86,6 +89,8 @@ for metadata_file in os.listdir(METADATA_DIR):
         }
     ],
 )
+
+
 
     print(f"Caricato: {metadata_file} con il PDF associato.")
 
