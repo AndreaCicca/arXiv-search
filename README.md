@@ -1,4 +1,4 @@
-# Script per la vettorizzazione dei PDF nel sito web tramite Qdrant
+# Script per la vettorizzazione dei PDF tramite Qdrant
 
 Per la guida a come mettere su un server Qdrant consiglio di visualizzare il Quickstart messo a disosizione dal tool https://qdrant.tech/documentation/quickstart/
 
