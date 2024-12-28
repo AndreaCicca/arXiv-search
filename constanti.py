@@ -1,7 +1,9 @@
 ############# File che contiene le costanti #############
 
 ENBEDDING_MODEL = "all-mpnet-base-v2"
+# ENBEDDING_MODEL = "all-MiniLM-L6-v2"
 ENBEDDING_MODEL_NUMERO_PARAMETRI = 768
+# ENBEDDING_MODEL_NUMERO_PARAMETRI = 384
 
 
 # PORT_DATABASE = 6333

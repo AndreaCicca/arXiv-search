@@ -15,13 +15,9 @@ embedding_model = SentenceTransformer(ENBEDDING_MODEL)
 
 # Crea o ricrea la collezione
 if not client.collection_exists(collection_name=COLLECTION_NAME):
-    client.create_collection(
-        collection_name=COLLECTION_NAME,
-        vectors_config=VectorParams(size=ENBEDDING_MODEL_NUMERO_PARAMETRI, distance=Distance.COSINE),
-    )
-    print(f"Collezione '{COLLECTION_NAME}' creata con successo!")
-else:
-    print(f"La collezione '{COLLECTION_NAME}' esiste già.")
+    print(f"Prima di eseguire l'embedding devi creare la collezione '{COLLECTION_NAME}'")
+    print("Esegui il comando 'create_collection.py' per crearla.")
+    exit()
 
 # Funzione per estrarre il testo dai PDF
 def extract_text_from_pdf(pdf_path):
