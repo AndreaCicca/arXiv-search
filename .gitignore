@@ -2,3 +2,4 @@ arxiv_markdowns/
 arxiv_pdfs/
 arxiv_metadata/
 __pycache__/
+cache/
