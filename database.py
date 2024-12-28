@@ -51,11 +51,11 @@ for metadata_file in os.listdir(METADATA_DIR):
 
     # Estrarre il nome del PDF associato
     pdf_filename = metadata_file.replace(".json", ".pdf")  # Usa il nome del file JSON
-    markdown_filename = metadata_file.replace(".json", ".md")  # Usa il nome del file JSON
+    # markdown_filename = metadata_file.replace(".json", ".md")  # Usa il nome del file JSON
     
     # Posso estrarre il testo del PDF dalla sua versione Markdown
     pdf_path = os.path.join(PDF_DIR, pdf_filename)
-    markdown_path = os.path.join(MARKDOWN_DIR, markdown_filename)
+    # markdown_path = os.path.join(MARKDOWN_DIR, markdown_filename)
 
     # Controlla se il PDF esiste
     if not os.path.exists(pdf_path):
