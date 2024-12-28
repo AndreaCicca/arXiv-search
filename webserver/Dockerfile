@@ -12,9 +12,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copia il codice dell'applicazione
 COPY . .
 
-# Esponi la porta 5000 (porta predefinita di Flask)
+# Esponi la porta 5000
 EXPOSE 5000
 
-# Comando per eseguire l'applicazione
 CMD ["python", "app.py"]
 
