@@ -37,7 +37,7 @@ if __name__ == "__main__":
     print("Benvenuto! Questo script ti permette di cercare frasi all'interno del database.")
     query = input("Inserisci una frase da cercare: ")
     try:
-        results = embed_and_search(query)
+        results = embed_and_search(query, top_k=10)
 
         if results:
             print("\nRisultati trovati:")
