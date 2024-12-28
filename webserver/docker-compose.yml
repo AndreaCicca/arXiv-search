@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  web:
+    build: .  # Costruisci l'immagine usando il Dockerfile nella directory corrente
+    ports:
+      - "7777:5000"  # Mappa la porta 7777 dell'host alla porta 5000 del container
+    volumes:
+      - .:/app  # Monta la directory corrente nel container per lo sviluppo
+    environment:
+      - FLASK_ENV=development  # Imposta l'ambiente di Flask su sviluppo
+
