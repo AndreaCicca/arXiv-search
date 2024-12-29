@@ -3,7 +3,35 @@ import time
 import json
 import requests
 import feedparser
+from datetime import date, timedelta
 from markitdown import MarkItDown
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+
+CS_CLASSES = [
+    'cs.' + cat for cat in [
+        'AI', 'AR', 'CC', 'CE', 'CG', 'CL', 'CR', 'CV', 'CY', 'DB',
+        'DC', 'DL', 'DM', 'DS', 'ET', 'FL', 'GL', 'GR', 'GT', 'HC',
+        'IR', 'IT', 'LG', 'LO', 'MA', 'MM', 'MS', 'NA', 'NE', 'NI',
+        'OH', 'OS', 'PF', 'PL', 'RO', 'SC', 'SD', 'SE', 'SI', 'SY',
+    ]
+]
+
+# MATH_CLASSES = [
+#     'math.' + cat for cat in [
+#         'AC', 'AG', 'AP', 'AT', 'CA', 'CO', 'CT', 'CV', 'DG', 'DS',
+#         'FA', 'GM', 'GN', 'GR', 'GT', 'HO', 'IT', 'KT', 'LO',
+#         'MG', 'MP', 'NA', 'NT', 'OA', 'OC', 'PR', 'QA', 'RA',
+#         'RT', 'SG', 'SP', 'ST', 'math-ph'
+#     ]
+# ]
+
+end_date = datetime.now()
+start_date = end_date - relativedelta(years=2)
+
+end_str = end_date.strftime('%Y-%m-%d')
+start_str = start_date.strftime('%Y-%m-%d')
+
 
 def safe_request(url, max_retries=3, backoff_factor=2):
     """Esegue una richiesta HTTP in modo sicuro, ritentando in caso di errori."""
@@ -31,15 +59,18 @@ def safe_request(url, max_retries=3, backoff_factor=2):
                 return None
     return None
 
-def download_arxiv_data(query="all:computer+science", start=0, max_results=5,
+def download_arxiv_data(query, start=0, max_results=5,
                         pdf_output_dir="arxiv_pdfs", md_output_dir="arxiv_markdowns", json_output_dir="arxiv_metadata"):
     # Costruisci l'URL per la query di arXiv
     url = (
         "http://export.arxiv.org/api/query?"
-        f"search_query={query}&"
+        f"search_query=all:{query} AND lastUpdatedDate:[{start_str} TO {end_str}]&"
         f"start={start}&"
-        f"max_results={max_results}"
+        f"max_results={max_results}&"
+        f"sortOrder=descending"
     )
+    
+    print(f"Scarico i risultati da: {url}")
     
     response = safe_request(url)
     if not response:
@@ -115,12 +146,8 @@ def download_arxiv_data(query="all:computer+science", start=0, max_results=5,
             print(f"Nessun PDF disponibile per: {entry.title}")
 
 if __name__ == "__main__":
-    # Apro il file download.json
-    with open("download.json", "r") as f:
-        data = json.load(f)
-        
-    max_results = data["max_results"]
+    max_results = 5  # Imposta il numero massimo di risultati per ogni query
     
-    # per ogni elemento in query eseguo il download
-    for query in data["queries"]:
+    # Per ogni categoria in CS_CLASSES eseguo il download
+    for query in CS_CLASSES:
         download_arxiv_data(query=query, max_results=max_results)
