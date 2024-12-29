@@ -3,10 +3,14 @@ import time
 import json
 import requests
 import feedparser
-from datetime import date, timedelta
 from markitdown import MarkItDown
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from colorama import Fore, Style, Back, init
+
+# Inizializza colorama
+init(autoreset=True)
 
 CS_CLASSES = [
     'cs.' + cat for cat in [
@@ -16,15 +20,6 @@ CS_CLASSES = [
         'OH', 'OS', 'PF', 'PL', 'RO', 'SC', 'SD', 'SE', 'SI', 'SY',
     ]
 ]
-
-# MATH_CLASSES = [
-#     'math.' + cat for cat in [
-#         'AC', 'AG', 'AP', 'AT', 'CA', 'CO', 'CT', 'CV', 'DG', 'DS',
-#         'FA', 'GM', 'GN', 'GR', 'GT', 'HO', 'IT', 'KT', 'LO',
-#         'MG', 'MP', 'NA', 'NT', 'OA', 'OC', 'PR', 'QA', 'RA',
-#         'RT', 'SG', 'SP', 'ST', 'math-ph'
-#     ]
-# ]
 
 end_date = datetime.now()
 start_date = end_date - relativedelta(years=2)
@@ -44,18 +39,18 @@ def safe_request(url, max_retries=3, backoff_factor=2):
             status_code = e.response.status_code if e.response else None
             if status_code and 500 <= status_code < 600 and attempt < max_retries:
                 wait_time = backoff_factor * attempt
-                print(f"Errore server {status_code}, tentativo {attempt}/{max_retries}. Attendo {wait_time} secondi...")
+                print(f"{Fore.YELLOW}Errore server {status_code}, tentativo {attempt}/{max_retries}. Attendo {wait_time} secondi...")
                 time.sleep(wait_time)
             else:
-                print(f"Errore HTTP irreversibile su {url}: {e}")
+                print(f"{Fore.RED}Errore HTTP irreversibile su {url}: {e}")
                 return None
         except requests.ConnectionError as e:
             if attempt < max_retries:
                 wait_time = backoff_factor * attempt
-                print(f"Errore di connessione, tentativo {attempt}/{max_retries}. Attendo {wait_time} secondi...")
+                print(f"{Fore.YELLOW}Errore di connessione, tentativo {attempt}/{max_retries}. Attendo {wait_time} secondi...")
                 time.sleep(wait_time)
             else:
-                print(f"Connessione fallita su {url} dopo {max_retries} tentativi: {e}")
+                print(f"{Fore.RED}Connessione fallita su {url} dopo {max_retries} tentativi: {e}")
                 return None
     return None
 
@@ -70,11 +65,11 @@ def download_arxiv_data(query, start=0, max_results=5,
         f"sortOrder=descending"
     )
     
-    print(f"Scarico i risultati da: {url}")
+    print(f"{Fore.CYAN}Scarico i risultati da: {url}")
     
     response = safe_request(url)
     if not response:
-        print("Impossibile ottenere i risultati da arXiv. Interrompo.")
+        print(f"{Fore.RED}Impossibile ottenere i risultati da arXiv. Interrompo.")
         return
     
     data = response.text
@@ -117,7 +112,7 @@ def download_arxiv_data(query, start=0, max_results=5,
         json_path = os.path.join(json_output_dir, f"{article_id}.json")
         with open(json_path, 'w', encoding='utf-8') as json_file:
             json.dump(metadata, json_file, indent=4)
-        print(f"Salvati metadati: {json_path}")
+        print(f"{Fore.GREEN}Salvati metadati: {json_path}")
         
         if pdf_link:
             pdf_path = os.path.join(pdf_output_dir, f"{article_id}.pdf")
@@ -126,7 +121,7 @@ def download_arxiv_data(query, start=0, max_results=5,
             if pdf_response:
                 with open(pdf_path, 'wb') as f:
                     f.write(pdf_response.content)
-                print(f"Scaricato: {pdf_path}")
+                print(f"{Fore.GREEN}Scaricato: {pdf_path}")
                 
                 # Tenta la conversione in markdown
                 try:
@@ -137,17 +132,22 @@ def download_arxiv_data(query, start=0, max_results=5,
                     with open(md_path, 'w', encoding='utf-8') as f_md:
                         f_md.write(md_content)
                     
-                    print(f"Convertito in Markdown: {md_path}")
+                    print(f"{Fore.GREEN}Convertito in Markdown: {md_path}")
                 except Exception as e:
-                    print(f"Impossibile convertire {pdf_path} in Markdown: {e}")
+                    print(f"{Fore.RED}Impossibile convertire {pdf_path} in Markdown: {e}")
             else:
-                print(f"Non è stato possibile scaricare il PDF per {entry.id}. Passo al prossimo.")
+                print(f"{Fore.RED}Non è stato possibile scaricare il PDF per {entry.id}. Passo al prossimo.")
         else:
-            print(f"Nessun PDF disponibile per: {entry.title}")
+            print(f"{Fore.RED}Nessun PDF disponibile per: {entry.title}")
 
 if __name__ == "__main__":
     max_results = 5  # Imposta il numero massimo di risultati per ogni query
+    num_threads = os.cpu_count() or 1
     
-    # Per ogni categoria in CS_CLASSES eseguo il download
-    for query in CS_CLASSES:
-        download_arxiv_data(query=query, max_results=max_results)
+    print(f"{Fore.CYAN}Numero di Thread: {num_threads}")
+    print(f"{Fore.GREEN}Scarico i risultati per le seguenti categorie di arXiv: {CS_CLASSES}")
+    
+    with ThreadPoolExecutor(max_workers=num_threads) as executor:
+        futures = [executor.submit(download_arxiv_data, query=query, max_results=max_results) for query in CS_CLASSES]
+        for future in as_completed(futures):
+            future.result()  # Attende il completamento di ogni futuro
