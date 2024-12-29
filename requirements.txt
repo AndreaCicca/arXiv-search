@@ -1,3 +1,10 @@
 feedparser
 markitdown
 qdrant_client
+requests
+colorama
+dateutil
+feedparser
+markitdown
+sentence-transformers
+PyPDF2
