@@ -3,3 +3,4 @@ arxiv_pdfs/
 arxiv_metadata/
 __pycache__/
 cache/
+Download.json

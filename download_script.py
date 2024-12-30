@@ -140,14 +140,18 @@ def download_arxiv_data(query, start=0, max_results=5,
         else:
             print(f"{Fore.RED}Nessun PDF disponibile per: {entry.title}")
 
+
+# Carica le categorie e i numeri massimi di risultati dal file JSON
+with open('Download.json', 'r', encoding='utf-8') as f:
+    download_config = json.load(f)
+
 if __name__ == "__main__":
-    max_results = 5  # Imposta il numero massimo di risultati per ogni query
     num_threads = os.cpu_count() or 1
     
     print(f"{Fore.CYAN}Numero di Thread: {num_threads}")
-    print(f"{Fore.GREEN}Scarico i risultati per le seguenti categorie di arXiv: {CS_CLASSES}")
+    print(f"{Fore.GREEN}Scarico i risultati per le seguenti categorie di arXiv: {list(download_config.keys())}")
     
     with ThreadPoolExecutor(max_workers=num_threads) as executor:
-        futures = [executor.submit(download_arxiv_data, query=query, max_results=max_results) for query in CS_CLASSES]
+        futures = [executor.submit(download_arxiv_data, query=query, max_results=max_results) for query, max_results in download_config.items()]
         for future in as_completed(futures):
-            future.result()  # Attende il completamento di ogni futuro
+            future.result()
