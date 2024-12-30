@@ -32,21 +32,27 @@ def embed_and_search(query: str, top_k: int = 5):
 
     return search_results
 
-# Esempio di utilizzo
 if __name__ == "__main__":
     print("Benvenuto! Questo script ti permette di cercare frasi all'interno del database.")
-    query = input("Inserisci una frase da cercare: ")
-    try:
-        results = embed_and_search(query, top_k=10)
+    
+    while True:
+        query = input("Inserisci una frase da cercare (o 'q'/'exit' per terminare): ")
+        
+        if query.lower() in ['q', 'exit']:
+            print("Uscita dal programma.")
+            break
+        
+        try:
+            results = embed_and_search(query, top_k=10)
 
-        if results:
-            print("\nRisultati trovati:")
-            for i, result in enumerate(results):
-                print(f"{i + 1}. ID: {result.id}")
-                print(f"   Punteggio: {result.score}")
-                print(f"   Titolo: {result.payload.get('title', 'N/A')}")
-                print(f"   Sommario: {result.payload.get('summary', 'N/A')[:100]}...")
-        else:
-            print("\nNessun risultato trovato.")
-    except Exception as e:
-        print(f"Errore durante la ricerca: {e}")
+            if results:
+                print("\nRisultati trovati:")
+                for i, result in enumerate(results):
+                    print(f"{i + 1}. ID: {result.id}")
+                    print(f"   Punteggio: {result.score}")
+                    print(f"   Titolo: {result.payload.get('title', 'N/A')}")
+                    print(f"   Sommario: {result.payload.get('summary', 'N/A')[:100]}...")
+            else:
+                print("\nNessun risultato trovato.")
+        except Exception as e:
+            print(f"Errore durante la ricerca: {e}")

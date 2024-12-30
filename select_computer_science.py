@@ -5,7 +5,7 @@ from tqdm import tqdm
 # Percorsi dei file
 input_file = 'dataset/arxiv-metadata-oai-snapshot.json'
 output_file = 'dataset/arxiv-computer-science.json'
-chunk_size = 1000  # Numero di righe per blocco
+chunk_size = 500  # Numero di righe per blocco
 
 def filter_chunk(chunk):
     cs_papers = []
