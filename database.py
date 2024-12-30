@@ -5,7 +5,7 @@ from qdrant_client import QdrantClient
 from qdrant_client.models import VectorParams, Distance
 from sentence_transformers import SentenceTransformer
 from PyPDF2 import PdfReader
-from constanti import *
+from costanti import *
 
 # Inizializza il client Qdrant
 client = QdrantClient(host=HOST_DATABASE, port=PORT_DATABASE)
@@ -48,7 +48,7 @@ for metadata_file in os.listdir(METADATA_DIR):
     # Estrarre il nome del PDF associato
     pdf_filename = metadata_file.replace(".json", ".pdf")  # Usa il nome del file JSON
     # markdown_filename = metadata_file.replace(".json", ".md")  # Usa il nome del file JSON
-    
+
     # Posso estrarre il testo del PDF dalla sua versione Markdown
     pdf_path = os.path.join(PDF_DIR, pdf_filename)
     # markdown_path = os.path.join(MARKDOWN_DIR, markdown_filename)
@@ -63,7 +63,7 @@ for metadata_file in os.listdir(METADATA_DIR):
     if not pdf_text:
         print(f"Errore durante l'estrazione del testo per {metadata_file}. Salto.")
         continue
-    
+
     # Estrai il testo dal Markdown
     # markdown_text = read_markdown_file(markdown_path)
     # if not markdown_text:
@@ -77,8 +77,8 @@ for metadata_file in os.listdir(METADATA_DIR):
     # Genera un ID valido per Qdrant
     point_id = str(uuid.uuid4())  # Genera un UUID univoco
 
-    
-    
+
+
     # NOTA BEBNE: il campo `vector` è obbligatorio e deve essere coerente con quello che viene utilizzato quando si crea la collezione
     client.upsert(
     collection_name=COLLECTION_NAME,

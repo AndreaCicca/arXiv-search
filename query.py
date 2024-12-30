@@ -1,7 +1,7 @@
 from qdrant_client import QdrantClient
 from sentence_transformers import SentenceTransformer
 from qdrant_client.models import ScoredPoint
-from constanti import *
+from costanti import *
 
 # Inizializza il client Qdrant
 client = QdrantClient(host=HOST_DATABASE, port=PORT_DATABASE)

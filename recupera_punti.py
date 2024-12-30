@@ -1,5 +1,5 @@
 from qdrant_client import QdrantClient
-from constanti import *
+from costanti import *
 
 
 client = QdrantClient(host=HOST_DATABASE, port=PORT_DATABASE)

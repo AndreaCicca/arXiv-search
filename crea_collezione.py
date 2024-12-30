@@ -1,6 +1,6 @@
 from qdrant_client import QdrantClient
 from qdrant_client.models import VectorParams, Distance
-from constanti import *
+from costanti import *
 
 # Inizializza il client Qdrant
 client = QdrantClient(host=HOST_DATABASE, port=PORT_DATABASE)
@@ -9,7 +9,7 @@ client = QdrantClient(host=HOST_DATABASE, port=PORT_DATABASE)
 
 if client.collection_exists(COLLECTION_NAME):
     print(f"Collezione '{COLLECTION_NAME}' già esistente, se vuoi eliminarla puoi utilizzare lo script 'elimina_collezione.py'")
-else: 
+else:
     client.create_collection(
         collection_name=COLLECTION_NAME,
         vectors_config=VectorParams(size=EMBEDDING_MODEL_NUMERO_PARAMETRI, distance=Distance.COSINE),  # Rimuovi il nome del vettore
