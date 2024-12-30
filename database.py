@@ -11,7 +11,7 @@ from constanti import *
 client = QdrantClient(host=HOST_DATABASE, port=PORT_DATABASE)
 
 # Inizializza il modello di embedding
-embedding_model = SentenceTransformer(ENBEDDING_MODEL)
+embedding_model = SentenceTransformer(EMBEDDING_MODEL)
 
 # Crea o ricrea la collezione
 if not client.collection_exists(collection_name=COLLECTION_NAME):
