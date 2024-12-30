@@ -3,6 +3,7 @@ import json
 import uuid
 from qdrant_client import QdrantClient
 from sentence_transformers import SentenceTransformer
+from concurrent.futures import ThreadPoolExecutor
 from costanti import *
 
 # Inizializza il client Qdrant
@@ -46,8 +47,9 @@ def process_paper(paper):
 
 # Itera sui file di metadati
 with open('dataset/arxiv-computer-science.json', 'r', encoding='utf-8') as f:
-    for line in f:
-        paper = json.loads(line)
-        process_paper(paper)
+    papers = [json.loads(line) for line in f]
 
-print("Caricamento completato!")
+with ThreadPoolExecutor(max_workers=8) as executor:
+    executor.map(process_paper, papers)
+
+print("Caricamento completato.")
