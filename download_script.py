@@ -62,7 +62,7 @@ def download_arxiv_data(query, start=0, max_results=5,
         f"search_query=all:{query} AND lastUpdatedDate:[{start_str} TO {end_str}]&"
         f"start={start}&"
         f"max_results={max_results}&"
-        f"sortOrder=descending"
+        f"sortBy=relevance"
     )
     
     print(f"{Fore.CYAN}Scarico i risultati da: {url}")
