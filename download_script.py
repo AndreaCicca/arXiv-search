@@ -12,6 +12,8 @@ from colorama import Fore, Style, Back, init
 # Inizializza colorama
 init(autoreset=True)
 
+# md = MarkItDown()
+
 end_date = datetime.now()
 start_date = end_date - relativedelta(years=2)
 
@@ -72,8 +74,6 @@ def download_arxiv_data(query, start=0, max_results=5, sort_by='relevance',
     for output_dir in [pdf_output_dir, md_output_dir, json_output_dir]:
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
-
-    # md = MarkItDown()  # Inizializza il convertitore Markdown
     
     for entry in feed.entries:
         pdf_link = None
