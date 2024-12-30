@@ -6,4 +6,5 @@ services:
     ports:
       - "7777:5000"  
     volumes:
-      - .:/app  
+      - .:/app
+    network_mode: host
