@@ -49,7 +49,9 @@ def process_paper(paper):
 with open('dataset/arxiv-computer-science.json', 'r', encoding='utf-8') as f:
     papers = [json.loads(line) for line in f]
 
-with ThreadPoolExecutor() as executor:
+max_workers = os.cpu_count() / 2
+
+with ThreadPoolExecutor(max_workers=max_workers) as executor:
     executor.map(process_paper, papers)
 
 print("Caricamento completato.")
