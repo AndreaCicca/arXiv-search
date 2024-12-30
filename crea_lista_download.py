@@ -1,11 +1,11 @@
 import json
 
 CS_CLASSES = [
-    'cs.' + cat for cat in [
-        'AI', 'AR', 'CC', 'CE', 'CG', 'CL', 'CR', 'CV', 'CY', 'DB',
-        'DC', 'DL', 'DM', 'DS', 'ET', 'FL', 'GL', 'GR', 'GT', 'HC',
-        'IR', 'IT', 'LG', 'LO', 'MA', 'MM', 'MS', 'NA', 'NE', 'NI',
-        'OH', 'OS', 'PF', 'PL', 'RO', 'SC', 'SD', 'SE', 'SI', 'SY',
+    'cat:cs.' + cat for cat in [
+        'AI', 'AR', 'CC', 'CE', 'CL', 'CR', 'CV',
+        'DB', 'DC', 'DS', 'FL', 'GR', 'HC', 'IR',
+        'IT', 'LG', 'LO', 'MA', 'MM', 'MS', 'NE',
+        'NI', 'OS', 'PF', 'PL', 'SC', 'SD', 'SE', 'SI',
     ]
 ]
 

@@ -12,6 +12,6 @@ if client.collection_exists(COLLECTION_NAME):
 else: 
     client.create_collection(
         collection_name=COLLECTION_NAME,
-        vectors_config=VectorParams(size=ENBEDDING_MODEL_NUMERO_PARAMETRI, distance=Distance.COSINE),  # Rimuovi il nome del vettore
+        vectors_config=VectorParams(size=EMBEDDING_MODEL_NUMERO_PARAMETRI, distance=Distance.COSINE),  # Rimuovi il nome del vettore
     )
 print(f"Collezione '{COLLECTION_NAME}' ricreata con successo!")

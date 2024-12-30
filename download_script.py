@@ -12,15 +12,6 @@ from colorama import Fore, Style, Back, init
 # Inizializza colorama
 init(autoreset=True)
 
-CS_CLASSES = [
-    'cs.' + cat for cat in [
-        'AI', 'AR', 'CC', 'CE', 'CG', 'CL', 'CR', 'CV', 'CY', 'DB',
-        'DC', 'DL', 'DM', 'DS', 'ET', 'FL', 'GL', 'GR', 'GT', 'HC',
-        'IR', 'IT', 'LG', 'LO', 'MA', 'MM', 'MS', 'NA', 'NE', 'NI',
-        'OH', 'OS', 'PF', 'PL', 'RO', 'SC', 'SD', 'SE', 'SI', 'SY',
-    ]
-]
-
 end_date = datetime.now()
 start_date = end_date - relativedelta(years=2)
 
@@ -54,15 +45,15 @@ def safe_request(url, max_retries=3, backoff_factor=2):
                 return None
     return None
 
-def download_arxiv_data(query, start=0, max_results=5,
+def download_arxiv_data(query, start=0, max_results=5, sort_by='relevance',
                         pdf_output_dir="arxiv_pdfs", md_output_dir="arxiv_markdowns", json_output_dir="arxiv_metadata"):
     # Costruisci l'URL per la query di arXiv
     url = (
         "http://export.arxiv.org/api/query?"
-        f"search_query=all:{query} AND lastUpdatedDate:[{start_str} TO {end_str}]&"
+        f"search_query={query} AND submittedDate:[{start_str} TO {end_str}]&"
         f"start={start}&"
         f"max_results={max_results}&"
-        f"sortBy=relevance"
+        f"sortBy={sort_by}"
     )
     
     print(f"{Fore.CYAN}Scarico i risultati da: {url}")

@@ -7,7 +7,7 @@ from constanti import *
 client = QdrantClient(host=HOST_DATABASE, port=PORT_DATABASE)
 
 # Inizializza il modello di embedding
-embedding_model = SentenceTransformer(ENBEDDING_MODEL)
+embedding_model = SentenceTransformer(EMBEDDING_MODEL)
 
 def embed_and_search(query: str, top_k: int = 5):
     """
