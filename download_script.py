@@ -3,7 +3,7 @@ import time
 import json
 import requests
 import feedparser
-from markitdown import MarkItDown
+# from markitdown import MarkItDown
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -73,7 +73,7 @@ def download_arxiv_data(query, start=0, max_results=5, sort_by='relevance',
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-    md = MarkItDown()  # Inizializza il convertitore Markdown
+    # md = MarkItDown()  # Inizializza il convertitore Markdown
     
     for entry in feed.entries:
         pdf_link = None
@@ -115,17 +115,17 @@ def download_arxiv_data(query, start=0, max_results=5, sort_by='relevance',
                 print(f"{Fore.GREEN}Scaricato: {pdf_path}")
                 
                 # Tenta la conversione in markdown
-                try:
-                    result = md.convert(pdf_path)
-                    md_content = result.text_content
+                # try:
+                #     result = md.convert(pdf_path)
+                #     md_content = result.text_content
                     
-                    md_path = os.path.join(md_output_dir, f"{article_id}.md")
-                    with open(md_path, 'w', encoding='utf-8') as f_md:
-                        f_md.write(md_content)
+                #     md_path = os.path.join(md_output_dir, f"{article_id}.md")
+                #     with open(md_path, 'w', encoding='utf-8') as f_md:
+                #         f_md.write(md_content)
                     
-                    print(f"{Fore.GREEN}Convertito in Markdown: {md_path}")
-                except Exception as e:
-                    print(f"{Fore.RED}Impossibile convertire {pdf_path} in Markdown: {e}")
+                #     print(f"{Fore.GREEN}Convertito in Markdown: {md_path}")
+                # except Exception as e:
+                #     print(f"{Fore.RED}Impossibile convertire {pdf_path} in Markdown: {e}")
             else:
                 print(f"{Fore.RED}Non è stato possibile scaricare il PDF per {entry.id}. Passo al prossimo.")
         else:
