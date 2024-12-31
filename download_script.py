@@ -17,8 +17,8 @@ init(autoreset=True)
 end_date = datetime.now()
 start_date = end_date - relativedelta(years=2)
 
-end_str = end_date.strftime('%Y-%m-%d')
-start_str = start_date.strftime('%Y-%m-%d')
+end_str = end_date.strftime('%Y%m%d%H%M')
+start_str = start_date.strftime('%Y%m%d%H%M')
 
 
 def safe_request(url, max_retries=3, backoff_factor=2):
