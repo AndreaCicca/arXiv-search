@@ -7,12 +7,18 @@ from concurrent.futures import ThreadPoolExecutor
 from costanti import *
 import pandas as pd
 from tqdm import tqdm
+import torch
 
+MAX_WORKERS = os.cpu_count() / 2
+BATCH_SIZE = 100
+
+print('Loading libraries')
 # Inizializza il client Qdrant
 client = QdrantClient(host=HOST_DATABASE, port=PORT_DATABASE)
 
 # Inizializza il modello di embedding
-embedding_model = SentenceTransformer(EMBEDDING_MODEL)
+device = 'cuda' if torch.cuda.is_available() and False else 'cpu'
+embedding_model = SentenceTransformer(EMBEDDING_MODEL).to(device)
 
 # Crea o ricrea la collezione
 if not client.collection_exists(collection_name=COLLECTION_NAME):
@@ -20,43 +26,54 @@ if not client.collection_exists(collection_name=COLLECTION_NAME):
     print("Esegui il comando 'crea_collezione.py' per crearla.")
     exit()
 
-# Funzione per generare embedding e caricare i dati su Qdrant
-def process_paper(paper):
-    paper = paper._asdict()
-    combined_text = f"{paper['title']}\n{paper['authors']}\n{paper['categories']}\n{paper['abstract']}"
-    embedding = embedding_model.encode(combined_text, convert_to_tensor=False)
+def process_papers(papers):
+    text_batch = [
+        f"{paper['title']}\n{paper['authors']}\n{paper['categories']}\n{paper['abstract']}"
+        for _, paper in papers.iterrows()
+    ]
+    
+    embeddings = embedding_model.encode(text_batch, convert_to_tensor=False, show_progress_bar=False)
+    
+    points = []
+    for i, (_, paper) in enumerate(papers.iterrows()):
+        point = {
+            "id": str(uuid.uuid4()),
+            "vector": embeddings[i].tolist(),
+            "payload": {
+                "title": paper["title"],
+                "authors": paper["authors"],
+                "categories": paper["categories"],
+                "summary": paper["abstract"],
+                "published": paper["created"],
+                "updated": paper["update_date"],
+            },
+        }
+        points.append(point)
+    
+    return points
 
-    point_id = str(uuid.uuid4())
-
+def process_batch(batch):
+    points = process_papers(batch)
     client.upsert(
         collection_name=COLLECTION_NAME,
-        points=[
-            {
-                "id": point_id,
-                "vector": embedding.tolist(),
-                "payload": {
-                    "title": paper["title"],
-                    "authors": paper["authors"],
-                    "categories": paper["categories"],
-                    "summary": paper["abstract"],
-                    "published": paper["created"],
-                    "updated": paper["update_date"],
-                },
-            }
-        ],
+        points=points
     )
+    return len(points)
 
-    #print(f"Caricato: {paper['id']}")
-    return point_id
+def main():
+    print('Loading metadata')
+    papers = pd.read_json('cs-23-24.json') #.sample(10000)
+    print('Metadata loaded!')
 
-# Itera sui file di metadati
-print('Loading metadata')
-papers = pd.read_json('cs-23-24.json').head(100)
-print('Metadata loaded!')
+    batches = [papers[i:i + BATCH_SIZE] for i in range(0, len(papers), BATCH_SIZE)]
 
-max_workers = os.cpu_count() / 2
+    with ThreadPoolExecutor(MAX_WORKERS=MAX_WORKERS) as executor:
+        futures = [executor.submit(process_batch, batch) for batch in batches]
+        
+        for future in tqdm(futures, total=len(batches)):
+            future.result()
 
-with ThreadPoolExecutor(max_workers=max_workers) as executor:
-    results = list(tqdm(executor.map(process_paper, papers.itertuples()), total=len(papers)))
+    print("Caricamento completato.")
 
-print("Caricamento completato.")
+if __name__ == "__main__":
+    main()
