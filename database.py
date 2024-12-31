@@ -1,5 +1,4 @@
 import os
-import json
 import uuid
 from qdrant_client import QdrantClient
 from sentence_transformers import SentenceTransformer
@@ -10,14 +9,14 @@ from tqdm import tqdm
 import torch
 
 MAX_WORKERS = os.cpu_count() / 2
-BATCH_SIZE = 50
+BATCH_SIZE = 100
 
 print('Loading libraries')
 # Inizializza il client Qdrant
 client = QdrantClient(host=HOST_DATABASE, port=PORT_DATABASE)
 
 # Inizializza il modello di embedding
-device = 'cuda' if torch.cuda.is_available() and False else 'cpu'
+device = 'cuda:1' if torch.cuda.is_available() else 'cpu'
 embedding_model = SentenceTransformer(EMBEDDING_MODEL).to(device)
 
 # Crea o ricrea la collezione
@@ -67,11 +66,13 @@ def main():
 
     batches = [papers[i:i + BATCH_SIZE] for i in range(0, len(papers), BATCH_SIZE)]
 
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        futures = [executor.submit(process_batch, batch) for batch in batches]
-        
-        for future in tqdm(futures, total=len(batches)):
-            future.result()
+    #with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+    #    futures = [executor.submit(process_batch, batch) for batch in batches]
+    #    
+    #    for future in tqdm(futures, total=len(batches)):
+    #        future.result()
+    for batch in tqdm(batches, desc="Processing batches"):
+        process_batch(batch)
 
     print("Caricamento completato.")
 
