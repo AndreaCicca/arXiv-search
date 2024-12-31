@@ -45,7 +45,7 @@ def process_papers(papers):
                 "categories": paper["categories"],
                 "summary": paper["abstract"],
                 "published": paper["created"],
-                "updated": paper["update_date"],
+                "arxiv-id": paper["id"]
             },
         }
         points.append(point)
