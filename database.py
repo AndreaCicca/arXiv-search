@@ -10,7 +10,7 @@ from tqdm import tqdm
 import torch
 
 MAX_WORKERS = os.cpu_count() / 2
-BATCH_SIZE = 100
+BATCH_SIZE = 50
 
 print('Loading libraries')
 # Inizializza il client Qdrant
@@ -67,7 +67,7 @@ def main():
 
     batches = [papers[i:i + BATCH_SIZE] for i in range(0, len(papers), BATCH_SIZE)]
 
-    with ThreadPoolExecutor(MAX_WORKERS=MAX_WORKERS) as executor:
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = [executor.submit(process_batch, batch) for batch in batches]
         
         for future in tqdm(futures, total=len(batches)):
