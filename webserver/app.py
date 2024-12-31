@@ -3,6 +3,7 @@ from flask_cors import CORS  # Importa la libreria CORS
 from qdrant_client import QdrantClient
 from sentence_transformers import SentenceTransformer
 from qdrant_client.models import ScoredPoint
+import threading
 
 PORT_DATABASE = 6555
 HOST_DATABASE = "192.168.1.26"
@@ -16,10 +17,20 @@ client = QdrantClient(host=HOST_DATABASE, port=PORT_DATABASE)
 # Inizializza il modello di embedding
 embedding_model = SentenceTransformer(EMBEDDING_MODEL)
 
-
-
 app = Flask(__name__)
 CORS(app)  # Abilita CORS per tutte le rotte e tutte le origini
+
+# Variabile per tracciare lo stato del modello
+model_ready = False
+
+def download_model():
+    global model_ready
+    # Scarica il modello di embedding
+    embedding_model.encode("test")
+    model_ready = True
+
+# Scarica il modello in un thread separato
+threading.Thread(target=download_model).start()
 
 def embed_and_search(query: str, top_k: int = 5):
     """
@@ -44,12 +55,21 @@ def embed_and_search(query: str, top_k: int = 5):
 
     return search_results
 
+@app.route('/health', methods=['GET'])
+def health_check():
+    if model_ready:
+        return jsonify({"status": "ready"}), 200
+    else:
+        return jsonify({"status": "loading"}), 503
 
 @app.route('/query', methods=['POST', 'OPTIONS'])
 def handle_query():
     if request.method == 'OPTIONS':
         # Gestisci la preflight request
         return '', 200
+
+    if not model_ready:
+        return jsonify({"error": "Il modello è ancora in fase di caricamento"}), 503
 
     data = request.json
     query = data.get('query')
@@ -58,7 +78,7 @@ def handle_query():
         return jsonify({"error": "Il campo 'query' è obbligatorio"}), 400
 
     try:
-        results = embed_and_search(query, top_k=3)
+        results = embed_and_search(query, top_k=10)
 
         if results:
             response = []

@@ -4,7 +4,6 @@ services:
   web:
     build: .  
     ports:
-      - "5000:5000"  
+      - "5001:5000"  
     volumes:
       - .:/app
-    network_mode: host
