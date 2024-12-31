@@ -6,7 +6,7 @@ from qdrant_client.models import ScoredPoint
 import threading
 
 PORT_DATABASE = 6555
-HOST_DATABASE = "192.168.1.26"
+HOST_DATABASE = "172.17.0.1"
 COLLECTION_NAME = "Gruppo1_test"
 EMBEDDING_MODEL = "all-mpnet-base-v2"
 EMBEDDING_MODEL_NUMERO_PARAMETRI = 768
