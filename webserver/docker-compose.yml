@@ -1,7 +1,6 @@
-version: '3.8'
-
 services:
   web:
+    container_name: web-flask
     build: .  
     ports:
       - "5001:5000"  
