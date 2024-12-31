@@ -5,6 +5,8 @@ from qdrant_client import QdrantClient
 from sentence_transformers import SentenceTransformer
 from concurrent.futures import ThreadPoolExecutor
 from costanti import *
+import pandas as pd
+from tqdm import tqdm
 
 # Inizializza il client Qdrant
 client = QdrantClient(host=HOST_DATABASE, port=PORT_DATABASE)
@@ -20,6 +22,7 @@ if not client.collection_exists(collection_name=COLLECTION_NAME):
 
 # Funzione per generare embedding e caricare i dati su Qdrant
 def process_paper(paper):
+    paper = paper._asdict()
     combined_text = f"{paper['title']}\n{paper['authors']}\n{paper['categories']}\n{paper['abstract']}"
     embedding = embedding_model.encode(combined_text, convert_to_tensor=False)
 
@@ -36,22 +39,24 @@ def process_paper(paper):
                     "authors": paper["authors"],
                     "categories": paper["categories"],
                     "summary": paper["abstract"],
-                    "published": paper["versions"][0]["created"],
+                    "published": paper["created"],
                     "updated": paper["update_date"],
                 },
             }
         ],
     )
 
-    print(f"Caricato: {paper['id']}")
+    #print(f"Caricato: {paper['id']}")
+    return point_id
 
 # Itera sui file di metadati
-with open('dataset/arxiv-computer-science.json', 'r', encoding='utf-8') as f:
-    papers = [json.loads(line) for line in f]
+print('Loading metadata')
+papers = pd.read_json('cs-23-24.json').head(100)
+print('Metadata loaded!')
 
 max_workers = os.cpu_count() / 2
 
 with ThreadPoolExecutor(max_workers=max_workers) as executor:
-    executor.map(process_paper, papers)
+    results = list(tqdm(executor.map(process_paper, papers.itertuples()), total=len(papers)))
 
 print("Caricamento completato.")

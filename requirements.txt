@@ -7,3 +7,4 @@ feedparser
 markitdown
 sentence-transformers
 PyPDF2
+pandas
