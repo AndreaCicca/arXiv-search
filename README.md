@@ -12,3 +12,27 @@ Di seguito gli script presenti:
 - `stats.py`: recupera i dettagli della collezione Qdrant
 - `recupera_punti.py`: recupera il contenuto dei punti/vettori (consiglio comunque di sfruttare la dashboard offerta dal tool localhost:6333/dashboard)
 - `select_computer_science.py`: estrae dal dataset arXiv solo i paper a tema "*computer science*"
+
+
+# Istruzioni per l'uso
+
+## Clonazione del repository
+
+```bash
+git clone https://github.com/AndreaCicca/arXiv-vettorizzazione
+cd arXiv-vettorizzazione
+```
+
+## Inizializzazione sottomoduli
+
+```bash
+git submodule init
+git submodule update
+```
+
+## Build dell'immagine Docker
+
+```bash
+cd webserver
+docker compose up -d --build
+```
