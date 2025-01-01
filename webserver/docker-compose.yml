@@ -1,9 +1,9 @@
 services:
   web:
     container_name: web-flask
-    build: .  
+    build: .
     ports:
-      - "5001:5000"  
+      - "5001:5000"
     volumes:
       - .:/app
     networks:
@@ -13,6 +13,15 @@ services:
       - QDRANT_PORT=6333
       - COLLECTION_NAME=Gruppo1
 
+  angular:
+    container_name: angular-app
+    build:
+      context: ../web-ui-applicazioni-indusriali
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    networks:
+      - qdrant_bridge
 
 # This network already exists and contains the qdrant container.
 # The port to be selected is before the docker port-forwarding.
