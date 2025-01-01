@@ -6,3 +6,16 @@ services:
       - "5001:5000"  
     volumes:
       - .:/app
+    networks:
+      - qdrant_bridge
+    environment:
+      - QDRANT_HOST=jovial_kapitsa
+      - QDRANT_PORT=6333
+      - COLLECTION_NAME=Gruppo1
+
+
+# This network already exists and contains the qdrant container.
+# The port to be selected is before the docker port-forwarding.
+networks:
+  qdrant_bridge:
+    external: true

@@ -4,10 +4,11 @@ from qdrant_client import QdrantClient
 from sentence_transformers import SentenceTransformer
 from qdrant_client.models import ScoredPoint
 import threading
+import os
 
-PORT_DATABASE = 6555
-HOST_DATABASE = "192.168.1.26"
-COLLECTION_NAME = "Gruppo1"
+HOST_DATABASE = os.getenv("QDRANT_HOST")
+PORT_DATABASE = os.getenv("QDRANT_PORT")
+COLLECTION_NAME = os.getenv("COLLECTION_NAME")
 EMBEDDING_MODEL = "all-mpnet-base-v2"
 EMBEDDING_MODEL_NUMERO_PARAMETRI = 768
 
