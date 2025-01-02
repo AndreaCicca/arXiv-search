@@ -85,10 +85,12 @@ def handle_query():
             response = []
             for result in results:
                 response.append({
-                    "id": result.id,
+                    "id-uuid": result.id,
                     "score": result.score,
                     "title": result.payload.get('title', 'N/A'),
-                    "summary": result.payload.get('summary', 'N/A')
+                    "summary": result.payload.get('summary', 'N/A'),
+                    "arxiv_id": result.payload.get('arxiv-id', 'N/A'),
+                    "published": result.payload.get('published', 'N/A')
                 })
             return jsonify(response)
         else:

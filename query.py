@@ -43,7 +43,7 @@ if __name__ == "__main__":
             break
         
         try:
-            results = embed_and_search(query, top_k=10)
+            results = embed_and_search(query, top_k=3)
 
             if results:
                 print("\nRisultati trovati:")
@@ -52,6 +52,8 @@ if __name__ == "__main__":
                     print(f"   Punteggio: {result.score}")
                     print(f"   Titolo: {result.payload.get('title', 'N/A')}")
                     print(f"   Sommario: {result.payload.get('summary', 'N/A')[:100]}...")
+                    print(f"   arXiv-ID: {result.payload.get('arxiv-id', 'N/A')}")
+                    print(f"   Pubblicato: {result.payload.get('published', 'N/A')}")
             else:
                 print("\nNessun risultato trovato.")
         except Exception as e:
