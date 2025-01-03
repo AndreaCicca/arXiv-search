@@ -33,6 +33,6 @@ git submodule update
 ## Build dell'immagine Docker
 
 ```bash
-cd webserver
+cd flask-webserver
 docker compose up -d --build
 ```
