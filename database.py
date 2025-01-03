@@ -9,7 +9,7 @@ from tqdm import tqdm
 import torch
 
 MAX_WORKERS = os.cpu_count() / 2
-BATCH_SIZE = 100
+BATCH_SIZE = 250
 
 print('Loading libraries')
 # Inizializza il client Qdrant
@@ -61,7 +61,7 @@ def process_batch(batch):
 
 def main():
     print('Loading metadata')
-    papers = pd.read_json('cs-23-24.json') #.sample(10000)
+    papers = pd.read_json('cs-23-24.json',dtype=False) #.sample(10000)
     print('Metadata loaded!')
 
     batches = [papers[i:i + BATCH_SIZE] for i in range(0, len(papers), BATCH_SIZE)]

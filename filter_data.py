@@ -1,5 +1,4 @@
 import pandas as pd
-from datetime import datetime
 
 CS_CLASSES = [
     'cs\\.' + cat for cat in [
@@ -30,5 +29,7 @@ print(df.shape)
 df = df[df['categories'].str.contains(pattern)]
 
 print(df.shape)
+
+df['id'] = df['id'].astype('string')
 
 df.to_json('cs-23-24.json')
