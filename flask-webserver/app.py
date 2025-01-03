@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, make_response, request, jsonify
 from flask_cors import CORS  # Importa la libreria CORS
 from qdrant_client import QdrantClient
 from sentence_transformers import SentenceTransformer
@@ -66,8 +66,11 @@ def health_check():
 @app.route('/agent', methods=['POST', 'OPTIONS'])
 def handle_agent():
     if request.method == 'OPTIONS':
-        # Gestisci la preflight request
-        return '', 200
+        response = make_response('', 200)
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        return response
 
     data = request.json
     query = data.get('query')
@@ -86,8 +89,11 @@ def handle_agent():
 @app.route('/query', methods=['POST', 'OPTIONS'])
 def handle_query():
     if request.method == 'OPTIONS':
-        # Gestisci la preflight request
-        return '', 200
+        response = make_response('', 200)
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        return response
 
     if not model_ready:
         return jsonify({"error": "Il modello è ancora in fase di caricamento"}), 503
