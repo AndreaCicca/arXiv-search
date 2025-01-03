@@ -1,3 +1,6 @@
 [submodule "web-ui-applicazioni-indusriali"]
 	path = web-ui-applicazioni-indusriali
 	url = https://github.com/AndreaCicca/web-ui-applicazioni-indusriali
+[submodule "arxiv-summary-agent"]
+	path = arxiv-summary-agent
+	url = https://github.com/giammisimo/arxiv-summary-agent
