@@ -65,7 +65,23 @@ def health_check():
     
 @app.route('/agent', methods=['POST', 'OPTIONS'])
 def handle_agent():
-    return jsonify({"message": "Hello, I am the AI agent!"})
+    if request.method == 'OPTIONS':
+        # Gestisci la preflight request
+        return '', 200
+
+    data = request.json
+    query = data.get('query')
+    
+    if not query:
+        return jsonify({"message": "Il campo 'query' è obbligatorio"}), 400
+    
+    response = []
+    # inserisco il messaggio di test nella risposta
+    response.append({
+        "message": "Questo è un messaggio di testo per la pagina dell'agente"
+    })
+    return jsonify(response)
+    
 
 @app.route('/query', methods=['POST', 'OPTIONS'])
 def handle_query():
