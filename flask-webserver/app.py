@@ -62,6 +62,10 @@ def health_check():
         return jsonify({"status": "ready"}), 200
     else:
         return jsonify({"status": "loading"}), 503
+    
+@app.route('/agent', methods=['POST', 'OPTIONS'])
+def handle_agent():
+    return jsonify({"message": "Hello, I am the AI agent!"})
 
 @app.route('/query', methods=['POST', 'OPTIONS'])
 def handle_query():
