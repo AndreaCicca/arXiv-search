@@ -8,3 +8,7 @@ markitdown
 sentence-transformers
 PyPDF2
 pandas
+langchain_openai
+langchain_ollama
+langgraph
+langchain
