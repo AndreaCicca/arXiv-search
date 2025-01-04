@@ -23,6 +23,17 @@ services:
     networks:
       - qdrant_bridge
 
+    
+  agente:
+    container_name: agente
+    build:
+      context: ../arxiv-summary-agent
+      dockerfile: Dockerfile
+    ports:
+      - "5002:8000"
+    networks:
+      - qdrant_bridge
+
 # This network already exists and contains the qdrant container.
 # The port to be selected is before the docker port-forwarding.
 networks:
