@@ -75,7 +75,7 @@ def handle_agent():
     if not query:
         return jsonify({"message": "Il campo 'query' è obbligatorio"}), 400
     
-    response_fastapi = requests.post("http://agent-fastapi:8000/query", json={"query": query})
+    response_fastapi = requests.post("http://agente-fastapi:8000/query", json={"query": query})
     return jsonify(response_fastapi.json())
     
 
