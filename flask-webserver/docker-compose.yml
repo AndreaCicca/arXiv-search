@@ -33,7 +33,7 @@ services:
       context: ../arxiv-summary-agent
       dockerfile: Dockerfile
     ports:
-      - "5002:8000"
+      - "5002:5002"
     networks:
       - qdrant_bridge
 
