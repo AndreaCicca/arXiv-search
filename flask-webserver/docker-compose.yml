@@ -1,6 +1,7 @@
 services:
   web:
     container_name: web-flask
+    hostname: web-flask
     build: .
     ports:
       - "5001:5000"
@@ -15,6 +16,7 @@ services:
 
   angular:
     container_name: angular-app
+    hostname: angular-app
     build:
       context: ../web-ui-applicazioni-indusriali
       dockerfile: Dockerfile
@@ -25,7 +27,8 @@ services:
 
     
   agente:
-    container_name: agente
+    container_name: agente-fastapi
+    hostname: agente-fastapi
     build:
       context: ../arxiv-summary-agent
       dockerfile: Dockerfile

@@ -5,6 +5,7 @@ from sentence_transformers import SentenceTransformer
 from qdrant_client.models import ScoredPoint
 import threading
 import os
+import requests
 
 HOST_DATABASE = os.getenv("QDRANT_HOST")
 PORT_DATABASE = os.getenv("QDRANT_PORT")
@@ -66,7 +67,6 @@ def health_check():
 @app.route('/agent', methods=['POST', 'OPTIONS'])
 def handle_agent():
     if request.method == 'OPTIONS':
-        # Gestisci la preflight request
         return '', 200
 
     data = request.json
@@ -75,12 +75,8 @@ def handle_agent():
     if not query:
         return jsonify({"message": "Il campo 'query' è obbligatorio"}), 400
     
-    response = []
-    # inserisco il messaggio di test nella risposta
-    response.append({
-        "message": "Questo è un messaggio di testo per la pagina dell'agente"
-    })
-    return jsonify(response)
+    response_fastapi = requests.post("http://agent-fastapi:8000/query", json={"query": query})
+    return jsonify(response_fastapi.json())
     
 
 @app.route('/query', methods=['POST', 'OPTIONS'])
