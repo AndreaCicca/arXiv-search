@@ -1,39 +1,32 @@
 services:
   web:
-    container_name: web-flask
-    hostname: web-flask
-    build: .
+    container_name: agent-fastapi
+    hostname: agent-fastapi
+    image: agent-code-fastapi
+    build:
+      context: ../arxiv-summary-agent
+      dockerfile: Dockerfile
     ports:
       - "5001:5000"
     volumes:
-      - .:/app
+      - ./temp:/app/temp
     networks:
       - qdrant_bridge
     environment:
       - QDRANT_HOST=jovial_kapitsa
       - QDRANT_PORT=6333
       - COLLECTION_NAME=Gruppo1
+      - PYTHONUNBUFFERED=1
 
   angular:
     container_name: angular-app
     hostname: angular-app
+    image: flask-webserver-angular
     build:
       context: ../web-ui-applicazioni-indusriali
       dockerfile: Dockerfile
     ports:
       - "4200:80"
-    networks:
-      - qdrant_bridge
-
-    
-  agente:
-    container_name: agente-fastapi
-    hostname: agente-fastapi
-    build:
-      context: ../arxiv-summary-agent
-      dockerfile: Dockerfile
-    ports:
-      - "5002:5002"
     networks:
       - qdrant_bridge
 
