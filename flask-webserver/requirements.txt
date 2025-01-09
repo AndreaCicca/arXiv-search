@@ -2,4 +2,3 @@ flask
 flask_cors
 qdrant_client
 sentence_transformers
-dotenv
