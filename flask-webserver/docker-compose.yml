@@ -17,6 +17,7 @@ services:
       - QDRANT_PORT=6333
       - COLLECTION_NAME=Gruppo1
       - PYTHONUNBUFFERED=1
+      - DEEPSEEK_API_KEY={DEEPSEEK_API_KEY}
 
   angular:
     container_name: angular-app

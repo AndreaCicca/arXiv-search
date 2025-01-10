@@ -6,3 +6,4 @@ cache/
 Download.json
 *.json
 *.zip
+flask-webserver/.env
