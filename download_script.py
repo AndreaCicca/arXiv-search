@@ -133,8 +133,12 @@ def download_arxiv_data(query, start=0, max_results=5, sort_by='relevance',
 
 
 # Carica le categorie e i numeri massimi di risultati dal file JSON
-with open('Download.json', 'r', encoding='utf-8') as f:
-    download_config = json.load(f)
+# with open('download.json', 'r', encoding='utf-8') as f:
+#     download_config = json.load(f)
+
+download_config = {
+    "cs.AI": 20
+}
 
 if __name__ == "__main__":
     num_threads = os.cpu_count() or 1
