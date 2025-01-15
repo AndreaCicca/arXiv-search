@@ -30,9 +30,9 @@ def process_papers(papers):
         f"{paper['title']}\n{paper['authors']}\n{paper['categories']}\n{paper['abstract']}"
         for _, paper in papers.iterrows()
     ]
-    
+
     embeddings = embedding_model.encode(text_batch, convert_to_tensor=False, show_progress_bar=False)
-    
+
     points = []
     for i, (_, paper) in enumerate(papers.iterrows()):
         point = {
@@ -48,7 +48,7 @@ def process_papers(papers):
             },
         }
         points.append(point)
-    
+
     return points
 
 def process_batch(batch):
@@ -61,14 +61,14 @@ def process_batch(batch):
 
 def main():
     print('Loading metadata')
-    papers = pd.read_json('cs-23-24.json',dtype=False) #.sample(10000)
+    papers = pd.read_json('dataset/cs-23-24.json',dtype=False) #.sample(10000)
     print('Metadata loaded!')
 
     batches = [papers[i:i + BATCH_SIZE] for i in range(0, len(papers), BATCH_SIZE)]
 
     #with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
     #    futures = [executor.submit(process_batch, batch) for batch in batches]
-    #    
+    #
     #    for future in tqdm(futures, total=len(batches)):
     #        future.result()
     for batch in tqdm(batches, desc="Processing batches"):

@@ -12,7 +12,7 @@ CS_CLASSES = [
 pattern = '|'.join(CS_CLASSES)
 
 print('Loading dataset....')
-df = pd.read_json('arxiv-metadata-oai-snapshot.json',lines=True)
+df = pd.read_json('dataset/arxiv-metadata-oai-snapshot.json',lines=True)
 print('Dataset loaded!')
 
 df['created'] = df['versions'].apply(lambda x: (x[0]['created']))
@@ -22,8 +22,8 @@ df['created'] = df['created'].dt.strftime('%Y-%m-%d')
 
 start_date = '2023-01-01'
 
-#df = df[df['update_date'] >= start_date] 
-df = df[df['created'] >= start_date] 
+#df = df[df['update_date'] >= start_date]
+df = df[df['created'] >= start_date]
 print(df.shape)
 
 df = df[df['categories'].str.contains(pattern)]
@@ -32,4 +32,4 @@ print(df.shape)
 
 df['id'] = df['id'].astype('string')
 
-df.to_json('cs-23-24.json')
+df.to_json('dataset/cs-23-24.json')
