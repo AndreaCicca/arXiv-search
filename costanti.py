@@ -14,17 +14,17 @@ EMBEDDING_MODEL_NUMERO_PARAMETRI = 768
 # COLLECTION_NAME = "pdf_collection"
 
 
-PORT_DATABASE = 6555
-HOST_DATABASE = "192.168.1.26"
-COLLECTION_NAME = "Gruppo1"
-PDF_DIR = "arxiv_pdfs"
-MARKDOWN_DIR = "arxiv_markdowns"
-METADATA_DIR = "arxiv_metadata"
-
-
 # PORT_DATABASE = 6555
 # HOST_DATABASE = "192.168.1.26"
-# COLLECTION_NAME = "Gruppo1_test"
+# COLLECTION_NAME = "Gruppo1"
 # PDF_DIR = "arxiv_pdfs"
 # MARKDOWN_DIR = "arxiv_markdowns"
 # METADATA_DIR = "arxiv_metadata"
+
+
+PORT_DATABASE = 6555
+HOST_DATABASE = "192.168.1.26"
+COLLECTION_NAME = "Gruppo1_2012-2024"
+PDF_DIR = "arxiv_pdfs"
+MARKDOWN_DIR = "arxiv_markdowns"
+METADATA_DIR = "arxiv_metadata"

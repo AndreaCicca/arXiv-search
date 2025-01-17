@@ -61,7 +61,7 @@ def process_batch(batch):
 
 def main():
     print('Loading metadata')
-    papers = pd.read_json('dataset/cs-23-24.json',dtype=False) #.sample(10000)
+    papers = pd.read_json('dataset/cs-12-24.json',dtype=False) #.sample(10000)
     print('Metadata loaded!')
 
     batches = [papers[i:i + BATCH_SIZE] for i in range(0, len(papers), BATCH_SIZE)]

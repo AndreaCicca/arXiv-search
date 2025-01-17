@@ -2,11 +2,11 @@ import pandas as pd
 
 CS_CLASSES = [
     'cs\\.' + cat for cat in [
-        'AI', 'AR', 'CC', 'CE', 'CL', 'CR', 'CV',
-        'DB', 'DC', 'DS', 'FL', 'GR', 'HC', 'IR',
-        'IT', 'LG', 'LO', 'MA', 'MM', 'MS', 'NE',
-        'NI', 'OS', 'PF', 'PL', 'SC', 'SD', 'SE', 'SI',
-        # 'CV', 'LG', 'CL', 'AI', 'NE', 'RO' # shorter ai list
+        # 'AI', 'AR', 'CC', 'CE', 'CL', 'CR', 'CV',
+        # 'DB', 'DC', 'DS', 'FL', 'GR', 'HC', 'IR',
+        # 'IT', 'LG', 'LO', 'MA', 'MM', 'MS', 'NE',
+        # 'NI', 'OS', 'PF', 'PL', 'SC', 'SD', 'SE', 'SI',
+        'CV', 'LG', 'CL', 'AI', 'NE', 'RO' # shorter ai list
     ]
 ]
 pattern = '|'.join(CS_CLASSES)
@@ -20,7 +20,7 @@ df['created'] = pd.to_datetime(df['created'], format="%a, %d %b %Y %H:%M:%S GMT"
 df['created'] = df['created'].dt.strftime('%Y-%m-%d')
 
 
-start_date = '2023-01-01'
+start_date = '2012-01-01'
 
 #df = df[df['update_date'] >= start_date]
 df = df[df['created'] >= start_date]
@@ -32,4 +32,4 @@ print(df.shape)
 
 df['id'] = df['id'].astype('string')
 
-df.to_json('dataset/cs-23-24.json')
+df.to_json('dataset/cs-12-24.json')
