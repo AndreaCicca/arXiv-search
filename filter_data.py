@@ -19,8 +19,9 @@ df['created'] = df['versions'].apply(lambda x: (x[0]['created']))
 df['created'] = pd.to_datetime(df['created'], format="%a, %d %b %Y %H:%M:%S GMT")
 df['created'] = df['created'].dt.strftime('%Y-%m-%d')
 
+year = "00"
 
-start_date = '2012-01-01'
+start_date = '20'+year+'-01-01'
 
 #df = df[df['update_date'] >= start_date]
 df = df[df['created'] >= start_date]
@@ -32,4 +33,4 @@ print(df.shape)
 
 df['id'] = df['id'].astype('string')
 
-df.to_json('dataset/cs-12-24.json')
+df.to_json('dataset/cs-' + year + '-24.json')
