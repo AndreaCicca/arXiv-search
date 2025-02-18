@@ -30,9 +30,9 @@ git submodule init
 git submodule update
 ```
 
-## Build dell'immagine Docker
+# Build dell'immagine Docker
 
 ```bash
-cd flask-webserver
+cd docker
 docker compose up -d --build
 ```
